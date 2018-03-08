@@ -1,0 +1,77 @@
+extends ../master
+block content
+    .container
+        .table-wraper
+            .table-title
+                .row
+                    .col-6
+                        h2 Manage 
+                            b Categories
+                    .col-6
+                        a.btn.btn-outline-success#addnew(href='#form-modal',data-toggle='modal')
+                            i.fas.fa-plus-circle
+                            span Add New Category
+            table.table.table-striped.table-hover
+                thead
+                    tr
+                        th ID
+                        th Name 
+                        th Actions
+                tbody
+                    each val in categories
+                        tr
+                            td
+                                | #{val.CatID}
+                            td
+                                | #{val.CatName}
+                            td
+                                a.edit(href='#form-modal',data-toggle='modal')
+                                    i.fas.fa-edit(data-toggle='tooltip', title='Edit')
+                                a.delete(href="#")
+                                    i.fas.fa-trash(data-toggle='tooltip', title='Delete')
+            .clearfix
+                .hint-text Showing
+                    b#curremt-page
+                        |  #{paginate.currentPage}
+                    |  out of
+                    b 
+                        | #{paginate.pages}
+                    |  (
+                    b#num-rows
+                        | 5
+                    |  records of 
+                    b#total-rows
+                        | #{paginate.totalRecord} 
+                    | entries)
+                - var i = 1;
+                ul.pagination
+                    li.page-item.disabled#prev
+                        a.page-link(href="#",aria-label="Previous")
+                            span(aria-hidden="true")|&laquo;
+                            span.sr-only Previous
+                    while i <= (paginate.pages)
+                        if i == paginate.currentPage
+                            li.page-item.btw.active
+                                a.page-link(href="#")= i++
+                        li.page-item.btw
+                                a.page-link(href="#")= i++
+                    li.page-item#next
+                        a.page-link(href="#",aria-label="Next")
+                            span(aria-hidden="true")|&raquo;
+                            span.sr-only Next
+
+    #form-modal.modal.fade
+        .modal-dialog
+            .modal-content
+                form
+                    .modal-header
+                        h4.modal-title Add Category
+                        button.close(data-dismiss='modal', aria-hidden='true') &times
+                    .modal-body
+                        .form-group
+                            input#catid(hidden,type='text')
+                            label(for='name') Name
+                            input.form-control#name(type='text', required,name='name')
+                    .modal-footer
+                        input.btn.btn-default(type='button',data-dismiss='modal', value='Cancel')
+                        input.btn.btn-info#save(type='submit',value='Save')
